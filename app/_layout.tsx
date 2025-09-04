@@ -1,34 +1,55 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { auth } from '@/firebaseConfig';
+import { Redirect, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import { MD3LightTheme, Provider as PaperProvider } from 'react-native-paper';
-import 'react-native-reanimated';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { MD3LightTheme, PaperProvider } from 'react-native-paper';
+import { signInAnonymouslyAsync } from '../store/firestore';
 
-export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...MaterialCommunityIcons.font,
-  });
+function AppLayout() {
+  const [isAuth, setIsAuth] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+      setIsAuthLoading(false);
 
-  if (!loaded) {
+      if (user) {
+        setIsAuth(true);
+      } else {
+        const anonUser = await signInAnonymouslyAsync();
+        if (anonUser) {
+          setIsAuth(true);
+        } else {
+          setIsAuth(false);
+        }
+      }
+    });
+
+    return () => unsubscribeAuth();
+  }, []);
+
+  if (isAuthLoading) {
     return null;
   }
 
+  if (!isAuth) {
+    return <Redirect href="/" />;
+  }
+
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
   return (
     <PaperProvider theme={MD3LightTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <AppLayout />
       <StatusBar style="auto" />
     </PaperProvider>
   );

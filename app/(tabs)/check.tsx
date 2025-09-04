@@ -41,7 +41,9 @@ export default function CheckScreen() {
   const handleSetStatus = async (value: string) => {
     await setStatusForDate({
       date: yyyymmdd,
-      status: value
+      status: value,
+      weight: "",
+      memo: ''
     });
     await loadData()
   };

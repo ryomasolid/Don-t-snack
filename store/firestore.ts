@@ -1,27 +1,33 @@
 import { CalendarDto } from '@/types/api';
-import { getAuth, signInAnonymously } from 'firebase/auth';
+import { signInAnonymously } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
 
-const auth = getAuth();
-let userId: string | null = null;
+/** 
+ * Firebase Authentication を使用して匿名ユーザーとしてサインイン
+ * サインイン済みのユーザーがいればその UID を返す
+ */
+export const signInAnonymouslyAsync = async (): Promise<string | null> => {
+  const currentUser = auth.currentUser;
 
-export const signInAnonymouslyAsync = async () => {
-  if (userId) return userId;
+  if (currentUser) {
+    return currentUser.uid;
+  }
 
   try {
     const userCredential = await signInAnonymously(auth);
-    userId = userCredential.user.uid;
-    console.log('Signed in anonymously with UID:', userId);
-    return userId;
+
+    return userCredential.user.uid;
   } catch (error) {
-    console.error('Error during anonymous sign-in:', error);
     return null;
   }
 };
 
-// 日付に対するステータスを書き込む
+/** 
+ * 指定された日付 (data.date) のユーザーのステータス (data.status) を Firestore に保存
+ */
 export const setStatusForDate = async (data: CalendarDto) => {
+  const userId = auth.currentUser?.uid;
   if (!userId) {
     console.error('User not authenticated.');
     return;
@@ -31,6 +37,8 @@ export const setStatusForDate = async (data: CalendarDto) => {
     const docRef = doc(db, 'users', userId, 'calendarInfo', data.date);
     await setDoc(docRef, {
       status: data.status,
+      weight: data.weight,
+      memo: data.memo,
     });
     console.log('Document successfully written for user:', userId);
   } catch (e) {
@@ -38,26 +46,34 @@ export const setStatusForDate = async (data: CalendarDto) => {
   }
 };
 
-// 全ての日付とステータスを取得
+/** 
+ * Firestore 内にある全ての日付とステータスのデータを取得
+ */
 export const getAllData = async () => {
+  const userId = auth.currentUser?.uid;
   if (!userId) {
     console.error('User not authenticated.');
     return [];
   }
 
   const querySnapshot = await getDocs(collection(db, 'users', userId, 'calendarInfo'));
-  const fetchedData: { date: string; status: string }[] = [];
+  const fetchedData: { date: string; status: string; weight: string; memo: string }[] = [];
   querySnapshot.forEach((doc) => {
     fetchedData.push({
       date: doc.id,
       status: doc.data().status as string,
+      weight: doc.data().weight as string,
+      memo: doc.data().memo as string,
     });
   });
   return fetchedData;
 };
 
-// 特定の日付のステータスを取得
+/** 
+ * 指定された日付 (date) に対応する単一のステータスを Firestore から取得
+ */
 export const getStatusByDate = async (date: string): Promise<string | null> => {
+  const userId = auth.currentUser?.uid;
   if (!userId) {
     console.error('User not authenticated.');
     return null;

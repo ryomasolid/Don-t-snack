@@ -15,7 +15,9 @@ export default function TabLayout() {
   const commonHeaderOptions = {
     headerShown: true,
     tabBarStyle: Platform.select({
-      ios: { position: 'absolute' },
+      ios: {
+        position: 'absolute' as const,
+      },
       default: {},
     }),
     header: () => <CustomHeader />,
