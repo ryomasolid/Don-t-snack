@@ -14,7 +14,12 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-      "buildNumber": "2.0.2"
+      "entitlements": {
+        "keychain-access-groups": [
+          "$(AppIdentifierPrefix)com.ryomasolid.dontsnack2"
+        ]
+      },
+      "buildNumber": "2.1.0"
     },
     "android": {
       "adaptiveIcon": {

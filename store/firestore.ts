@@ -1,25 +1,20 @@
 import { CalendarDto } from '@/types/api';
-import { getAuth, signInAnonymously } from 'firebase/auth';
+import { signInAnonymously } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
 
-const auth = getAuth();
-
-// ユーザーが匿名でサインインし、そのユーザーIDを返す
-// 既にログイン済みの場合は、既存のIDを返す
 export const signInAnonymouslyAsync = async (): Promise<string | null> => {
   const currentUser = auth.currentUser;
+
   if (currentUser) {
-    console.log('User is already signed in with UID:', currentUser.uid);
     return currentUser.uid;
   }
 
   try {
     const userCredential = await signInAnonymously(auth);
-    console.log('Signed in anonymously with UID:', userCredential.user.uid);
+
     return userCredential.user.uid;
   } catch (error) {
-    console.error('Error during anonymous sign-in:', error);
     return null;
   }
 };
