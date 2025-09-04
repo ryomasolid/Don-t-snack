@@ -3,6 +3,10 @@ import { signInAnonymously } from 'firebase/auth';
 import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebaseConfig';
 
+/** 
+ * Firebase Authentication を使用して匿名ユーザーとしてサインイン
+ * サインイン済みのユーザーがいればその UID を返す
+ */
 export const signInAnonymouslyAsync = async (): Promise<string | null> => {
   const currentUser = auth.currentUser;
 
@@ -19,7 +23,9 @@ export const signInAnonymouslyAsync = async (): Promise<string | null> => {
   }
 };
 
-// 日付に対するステータスを書き込む
+/** 
+ * 指定された日付 (data.date) のユーザーのステータス (data.status) を Firestore に保存
+ */
 export const setStatusForDate = async (data: CalendarDto) => {
   const userId = auth.currentUser?.uid;
   if (!userId) {
@@ -38,7 +44,9 @@ export const setStatusForDate = async (data: CalendarDto) => {
   }
 };
 
-// 全ての日付とステータスを取得
+/** 
+ * Firestore 内にある全ての日付とステータスのデータを取得
+ */
 export const getAllData = async () => {
   const userId = auth.currentUser?.uid;
   if (!userId) {
@@ -57,7 +65,9 @@ export const getAllData = async () => {
   return fetchedData;
 };
 
-// 特定の日付のステータスを取得
+/** 
+ * 指定された日付 (date) に対応する単一のステータスを Firestore から取得
+ */
 export const getStatusByDate = async (date: string): Promise<string | null> => {
   const userId = auth.currentUser?.uid;
   if (!userId) {

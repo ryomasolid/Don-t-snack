@@ -4,6 +4,9 @@ import { getAllData, setStatusForDate } from '@/store/firestore';
 import { CalendarDto } from '@/types/api';
 import { useEffect, useMemo, useState } from 'react';
 
+/** 
+ * 現在の日付を日本標準時（JST）で取得し、「YYYY-MM-DD」形式の文字列として返す
+ */
 const getTodayJST = (): string => {
   const date = new Date();
   const formatter = new Intl.DateTimeFormat('ja-JP', {
@@ -40,6 +43,10 @@ export const useCalendarLogic = () => {
 
   const today = useMemo(getTodayJST, []);
 
+  /** 
+   * Firestoreから全てのカレンダーデータを非同期で取得し、
+   * jotaiのグローバルな状態（calendarValues）を更新する関数
+   */
   const loadData = async () => {
     try {
       const fetchedData = await getAllData();
@@ -49,6 +56,9 @@ export const useCalendarLogic = () => {
     }
   };
 
+  /** 
+   * 最大連続日数と現在の連続日数を計算する関数
+   */
   const calculateStreak = () => {
     // ISO 形式 'YYYY-MM-DD' を 'YYYYMMDD' に変換
     const todayYYYYMMDD = today.replace(/-/g, '');
@@ -134,6 +144,9 @@ export const useCalendarLogic = () => {
     }
   }, [calendarValues]);
 
+  /** 
+   * 選択された日付のステータス（STATUS_YES, STATUS_NO, STATUS_NONE）をFirestoreに保存
+   */
   const handleSetStatus = async (value: string) => {
     if (!selectedDate) return;
     const yyyymmdd = selectedDate.replace(/-/g, '');
@@ -142,12 +155,18 @@ export const useCalendarLogic = () => {
     await loadData();
   };
 
+  /** 
+   * カレンダーの日付がタップされたときに実行される関数
+   */
   const handleDayPress = (date: { dateString: string }) => {
     setSelectedDate(date.dateString);
     const selectedData = calendarValues.find((item: CalendarDto) => item.date === date.dateString.replace(/-/g, ''));
     setStatus(selectedData?.status || STATUS_NONE);
   };
 
+  /** 
+   * カレンダーに表示するマーク付きの日付データを計算し、キャッシュする関数
+   */
   const markedDates = useMemo(() => {
     const allMarkedDates = calendarValues.reduce((acc: any, current: CalendarDto) => {
       const formattedDate = `${current.date.substring(0, 4)}-${current.date.substring(4, 6)}-${current.date.substring(6, 8)}`;
