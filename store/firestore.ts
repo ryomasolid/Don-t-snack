@@ -37,6 +37,8 @@ export const setStatusForDate = async (data: CalendarDto) => {
     const docRef = doc(db, 'users', userId, 'calendarInfo', data.date);
     await setDoc(docRef, {
       status: data.status,
+      weight: data.weight,
+      memo: data.memo,
     });
     console.log('Document successfully written for user:', userId);
   } catch (e) {
@@ -55,11 +57,13 @@ export const getAllData = async () => {
   }
 
   const querySnapshot = await getDocs(collection(db, 'users', userId, 'calendarInfo'));
-  const fetchedData: { date: string; status: string }[] = [];
+  const fetchedData: { date: string; status: string; weight: string; memo: string }[] = [];
   querySnapshot.forEach((doc) => {
     fetchedData.push({
       date: doc.id,
       status: doc.data().status as string,
+      weight: doc.data().weight as string,
+      memo: doc.data().memo as string,
     });
   });
   return fetchedData;

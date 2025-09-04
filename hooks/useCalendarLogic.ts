@@ -36,8 +36,12 @@ const color = (value?: string): string | undefined => {
 export const useCalendarLogic = () => {
   const { useAtom } = require("jotai");
   const [calendarValues, setClendarValues] = useAtom(calendarAtom);
+
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [status, setStatus] = useState<string>(STATUS_NONE);
+  const [weight, setWeight] = useState<string>();
+  const [memo, setMemo] = useState<string>();
+
   const [maxNoStreak, setMaxNoStreak] = useState<number>(0);
   const [currentNoStreak, setCurrentNoStreak] = useState<number>(0);
 
@@ -145,13 +149,12 @@ export const useCalendarLogic = () => {
   }, [calendarValues]);
 
   /** 
-   * 選択された日付のステータス（STATUS_YES, STATUS_NO, STATUS_NONE）をFirestoreに保存
+   * 選択された日付のデータをFirestoreに保存
    */
-  const handleSetStatus = async (value: string) => {
+  const handleSetStatus = async (status?: string, weight?: string, memo?: string) => {
     if (!selectedDate) return;
     const yyyymmdd = selectedDate.replace(/-/g, '');
-    await setStatusForDate({ date: yyyymmdd, status: value });
-    setStatus(value);
+    await setStatusForDate({ date: yyyymmdd, status: status, weight: weight, memo: memo });
     await loadData();
   };
 
@@ -162,6 +165,8 @@ export const useCalendarLogic = () => {
     setSelectedDate(date.dateString);
     const selectedData = calendarValues.find((item: CalendarDto) => item.date === date.dateString.replace(/-/g, ''));
     setStatus(selectedData?.status || STATUS_NONE);
+    setWeight(selectedData?.weight);
+    setMemo(selectedData?.memo);
   };
 
   /** 
@@ -194,6 +199,10 @@ export const useCalendarLogic = () => {
     selectedDate,
     status,
     setStatus,
+    weight,
+    setWeight,
+    memo,
+    setMemo,
     maxNoStreak,
     currentNoStreak,
     markedDates,

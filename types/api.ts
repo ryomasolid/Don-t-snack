@@ -4,5 +4,7 @@ export interface CalendarDto {
   // '0' : 未設定
   // '1' : Yes
   // '2' : No
-  status: string;
+  status?: string;
+  weight?: string;
+  memo?: string;
 }
