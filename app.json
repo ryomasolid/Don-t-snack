@@ -19,7 +19,7 @@
           "$(AppIdentifierPrefix)com.ryomasolid.dontsnack2"
         ]
       },
-      "buildNumber": "2.1.0"
+      "buildNumber": "2.2.5"
     },
     "plugins": [
       "expo-router",
