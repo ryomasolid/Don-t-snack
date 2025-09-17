@@ -9,25 +9,35 @@ import { signInAnonymouslyAsync } from '../store/firestore';
 function AppLayout() {
   const [isAuth, setIsAuth] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-      setIsAuthLoading(false);
 
       if (user) {
         setIsAuth(true);
-      } else {
-        const anonUser = await signInAnonymouslyAsync();
-        if (anonUser) {
+        setIsAuthLoading(false);
+        setIsAuthenticating(false);
+        return;
+      }
+
+      if (!isAuthenticating) {
+        setIsAuthenticating(true);
+        const anonUserUid = await signInAnonymouslyAsync();
+
+        if (anonUserUid) {
           setIsAuth(true);
         } else {
           setIsAuth(false);
         }
+
+        setIsAuthLoading(false);
+        setIsAuthenticating(false);
       }
     });
 
     return () => unsubscribeAuth();
-  }, []);
+  }, [isAuthenticating]);
 
   if (isAuthLoading) {
     return null;
