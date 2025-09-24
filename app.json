@@ -2,7 +2,7 @@
   "expo": {
     "name": "Don't Snack",
     "slug": "dont-snack",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/favicon.png",
     "scheme": "myapp",
@@ -12,14 +12,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.ryomasolid.dontsnack2",
       "config": {
-        "usesNonExemptEncryption": false
+        "usesNonExemptEncryption": false,
+        "googleMobileAdsAppId": "ca-app-pub-3362493734697220~2379722807"
       },
       "entitlements": {
         "keychain-access-groups": [
           "$(AppIdentifierPrefix)com.ryomasolid.dontsnack2"
         ]
       },
-      "buildNumber": "2.2.6"
+      "buildNumber": "2.2.8"
     },
     "plugins": [
       "expo-router",
