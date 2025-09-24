@@ -26,6 +26,24 @@
 
 ---
 
+## ビルドと提出
+このプロジェクトのiOSアプリをビルドして、App Store Connectに提出するまでの手順は以下の通りです。
+
+1.  アプリのビルド
+アプリのバイナリファイル（.ipa）を生成します。
+    ```bash
+    npx eas build -p ios
+    ```
+このコマンドは、Expo Application Services (EAS) を使って、クラウド上でプロジェクトをビルドし、署名済みのバイナリを生成します。
+2.  App Store Connectへの提出
+生成されたバイナリをAppleのApp Store Connectにアップロードします。
+    ```bash
+    eas submit --platform ios
+    ```
+このコマンドを実行すると、ビルドされたアプリがApp Store Connectに提出され、テスターへの配布や審査提出が可能になります。
+
+---
+
 ## 🛠️ 使用技術
 
 このプロジェクトは、最新のクロスプラットフォーム開発技術を活用しています。
