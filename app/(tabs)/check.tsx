@@ -7,7 +7,10 @@ import { calendarAtom } from '@/store/atoms';
 import { getAllData, getStatusByDate, setStatusForDate } from '@/store/firestore';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { Text } from 'react-native-paper';
+
+const bannerAdUnitId = '';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -99,6 +102,13 @@ export default function CheckScreen() {
       </View>
 
       <Text variant="bodyLarge" style={[styles.dateText, { color: theme.color1 }]}>{formattedDate}</Text>
+
+      <View style={styles.bannerAdContainer}>
+        <BannerAd
+          unitId={bannerAdUnitId}
+          size={BannerAdSize.FULL_BANNER}
+        />
+      </View>
     </ContainerComponent>
   );
 }
@@ -120,5 +130,11 @@ const styles = StyleSheet.create({
   dateText: {
     textAlign: 'center',
     fontSize: 14,
+  },
+  bannerAdContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 80
   },
 });
