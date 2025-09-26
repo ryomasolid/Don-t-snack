@@ -12,7 +12,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import { Calendar, DateData } from 'react-native-calendars';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
-const bannerAdUnitId = '';
+const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT_ID ?? '';
 
 export default function CalendarScreen() {
   const theme = useThemeStyles();
@@ -122,7 +122,7 @@ export default function CalendarScreen() {
       <View style={styles.bannerAdContainer}>
         <BannerAd
           unitId={bannerAdUnitId}
-          size={BannerAdSize.FULL_BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
         />
       </View>
 
@@ -249,9 +249,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   bannerAdContainer: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 80
+    marginBottom: 70
   },
 });
