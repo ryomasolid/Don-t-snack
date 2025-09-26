@@ -1,7 +1,7 @@
 import { Colors } from '@/constants/Colors';
 import { colorAtom } from '@/store/atoms';
 import { ReactNode } from 'react';
-import { View, type ViewProps } from 'react-native';
+import { StyleSheet, View, type ViewProps } from 'react-native';
 
 export type ContainerComponentProps = ViewProps & {
   children: ReactNode
@@ -13,10 +13,18 @@ export function ContainerComponent({ children }: ContainerComponentProps) {
   const bgColor = !color ? Colors.dark.text : Colors.light.text
 
   return (
-    <>
-      <View style={{ height: "100%", backgroundColor: bgColor, padding: 10 }}>
-        {children}
-      </View>
-    </>
+    <View style={[styles.container, { backgroundColor: bgColor }]}>
+      {children}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: "100%",
+    padding: 10
+  }
+});

@@ -7,7 +7,10 @@ import { calendarAtom } from '@/store/atoms';
 import { getAllData, getStatusByDate, setStatusForDate } from '@/store/firestore';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { Text } from 'react-native-paper';
+
+const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT_ID ?? '';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {
@@ -85,25 +88,38 @@ export default function CheckScreen() {
 
   return (
     <ContainerComponent>
-      <Text variant="bodyLarge" style={[styles.titleContainer, { color: theme.color1 }]}>Did you snack today?</Text>
+      <View style={styles.checkContainer}>
+        <Text variant="bodyLarge" style={[styles.titleContainer, { color: theme.color1 }]}>Did you snack today?</Text>
 
-      <View style={styles.bodyContainer}>
-        {status !== STATUS_YES
-          ? <CircleWithTextComponent text1='Yes,' text2='I snacked' isGreen={false} handleClick={handleClickYes} />
-          : <CheckmarkComponent isGreen={false} onPress={handleClickYes} />
-        }
-        {status !== STATUS_NO
-          ? <CircleWithTextComponent text1='No,' text2="I didn't" isGreen={true} handleClick={handleClickNo} />
-          : <CheckmarkComponent isGreen={true} onPress={handleClickNo} />
-        }
+        <View style={styles.bodyContainer}>
+          {status !== STATUS_YES
+            ? <CircleWithTextComponent text1='Yes,' text2='I snacked' isGreen={false} handleClick={handleClickYes} />
+            : <CheckmarkComponent isGreen={false} onPress={handleClickYes} />
+          }
+          {status !== STATUS_NO
+            ? <CircleWithTextComponent text1='No,' text2="I didn't" isGreen={true} handleClick={handleClickNo} />
+            : <CheckmarkComponent isGreen={true} onPress={handleClickNo} />
+          }
+        </View>
+
+        <Text variant="bodyLarge" style={[styles.dateText, { color: theme.color1 }]}>{formattedDate}</Text>
       </View>
 
-      <Text variant="bodyLarge" style={[styles.dateText, { color: theme.color1 }]}>{formattedDate}</Text>
+      <View style={styles.bannerAdContainer}>
+        <BannerAd
+          unitId={bannerAdUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        />
+      </View>
     </ContainerComponent>
   );
 }
 
 const styles = StyleSheet.create({
+  checkContainer: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
   titleContainer: {
     textAlign: 'center',
     fontSize: 24,
@@ -120,5 +136,9 @@ const styles = StyleSheet.create({
   dateText: {
     textAlign: 'center',
     fontSize: 14,
+  },
+  bannerAdContainer: {
+    alignItems: 'center',
+    marginBottom: 70
   },
 });

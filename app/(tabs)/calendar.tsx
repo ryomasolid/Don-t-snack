@@ -10,6 +10,9 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { ActionSheetRef } from 'react-native-actions-sheet';
 import ActionSheet from 'react-native-actions-sheet';
 import { Calendar, DateData } from 'react-native-calendars';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+
+const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT_ID ?? '';
 
 export default function CalendarScreen() {
   const theme = useThemeStyles();
@@ -84,7 +87,6 @@ export default function CalendarScreen() {
   };
 
   return (
-
     <ContainerComponent>
       <Calendar
         key={theme.color2}
@@ -115,6 +117,13 @@ export default function CalendarScreen() {
           <Text style={styles.streakLabel}>継続日数</Text>
           <Text style={styles.streakValue}>{currentNoStreak}日</Text>
         </View>
+      </View>
+
+      <View style={styles.bannerAdContainer}>
+        <BannerAd
+          unitId={bannerAdUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        />
       </View>
 
       <ActionSheet ref={actionSheetRef} headerAlwaysVisible={true} gestureEnabled={true} onClose={handleClose}>
@@ -238,5 +247,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     marginTop: 5,
+  },
+  bannerAdContainer: {
+    alignItems: 'center',
+    marginBottom: 70
   },
 });
