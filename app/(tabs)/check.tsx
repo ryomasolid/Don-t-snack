@@ -10,7 +10,7 @@ import { StyleSheet, View } from 'react-native';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { Text } from 'react-native-paper';
 
-const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT_ID ?? '';
+const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT1_ID ?? '';
 
 const today = new Date();
 const formattedDate = today.toLocaleDateString('en-US', {

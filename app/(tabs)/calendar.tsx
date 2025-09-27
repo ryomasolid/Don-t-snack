@@ -12,7 +12,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import { Calendar, DateData } from 'react-native-calendars';
 import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
-const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT_ID ?? '';
+const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT2_ID ?? '';
 
 export default function CalendarScreen() {
   const theme = useThemeStyles();
