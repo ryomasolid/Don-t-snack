@@ -35,6 +35,7 @@
     npx eas build -p ios
     ```
 このコマンドは、Expo Application Services (EAS) を使って、クラウド上でプロジェクトをビルドし、署名済みのバイナリを生成します。
+
 2.  App Store Connectへの提出
 生成されたバイナリをAppleのApp Store Connectにアップロードします。
     ```bash
