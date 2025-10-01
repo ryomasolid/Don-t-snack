@@ -39,7 +39,7 @@
 2.  App Store Connectへの提出
 生成されたバイナリをAppleのApp Store Connectにアップロードします。
     ```bash
-    eas submit --platform ios
+    npx eas submit --platform ios
     ```
 このコマンドを実行すると、ビルドされたアプリがApp Store Connectに提出され、テスターへの配布や審査提出が可能になります。
 
