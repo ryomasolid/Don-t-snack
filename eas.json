@@ -18,10 +18,8 @@
         "EXPO_PUBLIC_BANNER_AD_UNIT1_ID": "@EXPO_PUBLIC_BANNER_AD_UNIT1_ID",
         "EXPO_PUBLIC_BANNER_AD_UNIT2_ID": "@EXPO_PUBLIC_BANNER_AD_UNIT2_ID"
       },
-      "ios": {
-        "cache": {
-          "enabled": false
-        }
+      "cache": {
+        "enabled": false
       }
     },
     "preview": {
@@ -39,10 +37,8 @@
         "EXPO_PUBLIC_BANNER_AD_UNIT1_ID": "@EXPO_PUBLIC_BANNER_AD_UNIT1_ID",
         "EXPO_PUBLIC_BANNER_AD_UNIT2_ID": "@EXPO_PUBLIC_BANNER_AD_UNIT2_ID"
       },
-      "ios": {
-        "cache": {
-          "enabled": false
-        }
+      "cache": {
+        "enabled": false
       }
     }
   },
