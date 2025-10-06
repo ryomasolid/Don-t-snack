@@ -1,18 +1,18 @@
-import { CheckmarkComponent } from '@/components/CheckmarkComponent';
-import { CircleWithTextComponent } from '@/components/CircleWithTextComponent';
-import { ContainerComponent } from '@/components/ContainerComponent';
-import { STATUS_NO, STATUS_NONE, STATUS_YES } from '@/constants/Status';
-import { useCalendarLogic } from '@/hooks/useCalendarLogic';
-import { useThemeStyles } from '@/hooks/useThemeStyles';
-import { Ionicons } from '@expo/vector-icons';
-import React, { useRef } from 'react';
-import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
-import type { ActionSheetRef } from 'react-native-actions-sheet';
-import ActionSheet from 'react-native-actions-sheet';
-import { Calendar, DateData } from 'react-native-calendars';
-import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import { CheckmarkComponent } from "@/components/CheckmarkComponent";
+import { CircleWithTextComponent } from "@/components/CircleWithTextComponent";
+import { ContainerComponent } from "@/components/ContainerComponent";
+import { STATUS_NO, STATUS_NONE, STATUS_YES } from "@/constants/Status";
+import { useCalendarLogic } from "@/hooks/useCalendarLogic";
+import { useThemeStyles } from "@/hooks/useThemeStyles";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useRef } from "react";
+import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
+import type { ActionSheetRef } from "react-native-actions-sheet";
+import ActionSheet from "react-native-actions-sheet";
+import { Calendar, DateData } from "react-native-calendars";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 
-const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT2_ID ?? '';
+const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT2_ID ?? "";
 
 export default function CalendarScreen() {
   const theme = useThemeStyles();
@@ -46,44 +46,44 @@ export default function CalendarScreen() {
   // Yes押下処理
   const handleClickYes = () => {
     const value = status === STATUS_YES ? STATUS_NONE : STATUS_YES;
-    setStatus(value)
+    setStatus(value);
   };
 
   // No押下処理
   const handleClickNo = () => {
     const value = status === STATUS_NO ? STATUS_NONE : STATUS_NO;
-    setStatus(value)
+    setStatus(value);
   };
 
   // 体重入力処理
   const handleChangeWeight = (value: string) => {
     if (value.length > 3) {
-      return
+      return;
     }
 
-    setWeight(value)
-  }
+    setWeight(value);
+  };
 
   // メモ入力処理
   const handleChangeMemo = (value: string) => {
-    const byteLength = new TextEncoder().encode(value).length
+    const byteLength = new TextEncoder().encode(value).length;
     if (byteLength > 255) {
-      return
+      return;
     }
 
-    setMemo(value)
-  }
+    setMemo(value);
+  };
 
   const handleClose = () => {
-    setWeight('')
-    setMemo('')
+    setWeight("");
+    setMemo("");
     Keyboard.dismiss();
 
-    if (status === '0' && !weight && !memo) {
-      return
+    if (status === "0" && !weight && !memo) {
+      return;
     }
 
-    handleSetStatus(status, weight ?? '', memo ?? '')
+    handleSetStatus(status, weight ?? "", memo ?? "");
   };
 
   return (
@@ -98,7 +98,7 @@ export default function CalendarScreen() {
         enableSwipeMonths={true}
         theme={{
           calendarBackground: theme.color2,
-          arrowColor: '#2D4150',
+          arrowColor: "#2D4150",
         }}
         style={{
           backgroundColor: theme.color2,
@@ -126,18 +126,36 @@ export default function CalendarScreen() {
         />
       </View>
 
-      <ActionSheet ref={actionSheetRef} headerAlwaysVisible={true} gestureEnabled={true} onClose={handleClose}>
+      <ActionSheet
+        ref={actionSheetRef}
+        headerAlwaysVisible={true}
+        gestureEnabled={true}
+        onClose={handleClose}
+      >
         <View style={styles.bottomSheetContainer}>
           <View style={styles.checkContainer}>
             {selectedDate && (
               <>
                 {status !== STATUS_YES ? (
-                  <CircleWithTextComponent text1='Yes,' text2='I snacked' isGreen={false} handleClick={handleClickYes} />
+                  <CircleWithTextComponent
+                    text1="Yes,"
+                    text2="I snacked"
+                    isGreen={false}
+                    handleClick={handleClickYes}
+                  />
                 ) : (
-                  <CheckmarkComponent isGreen={false} onPress={handleClickYes} />
+                  <CheckmarkComponent
+                    isGreen={false}
+                    onPress={handleClickYes}
+                  />
                 )}
                 {status !== STATUS_NO ? (
-                  <CircleWithTextComponent text1='No,' text2="I didn't" isGreen={true} handleClick={handleClickNo} />
+                  <CircleWithTextComponent
+                    text1="No,"
+                    text2="I didn't"
+                    isGreen={true}
+                    handleClick={handleClickNo}
+                  />
                 ) : (
                   <CheckmarkComponent isGreen={true} onPress={handleClickNo} />
                 )}
@@ -181,8 +199,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   checkContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     paddingVertical: 20,
     gap: 20,
   },
@@ -191,9 +209,9 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     padding: 10,
-    backgroundColor: '#383838',
+    backgroundColor: "#383838",
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -201,36 +219,36 @@ const styles = StyleSheet.create({
   },
   inputTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
     marginBottom: 5,
   },
   textInputWeight: {
     height: 40,
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
   textInputMemo: {
     height: 100,
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
   streakContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 30,
     marginVertical: 20,
   },
   streakItem: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 15,
     borderRadius: 10,
-    backgroundColor: '#383838',
+    backgroundColor: "#383838",
     width: 150,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -238,18 +256,18 @@ const styles = StyleSheet.create({
   },
   streakLabel: {
     fontSize: 14,
-    color: '#ccc',
+    color: "#ccc",
     marginTop: 5,
-    textAlign: 'center',
+    textAlign: "center",
   },
   streakValue: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
     marginTop: 5,
   },
   bannerAdContainer: {
-    alignItems: 'center',
-    marginBottom: 70
+    alignItems: "center",
+    marginBottom: 70,
   },
 });
