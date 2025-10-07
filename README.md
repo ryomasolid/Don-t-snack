@@ -33,16 +33,16 @@
 1.  アプリのビルド
     アプリのバイナリファイル（.ipa）を生成します。
     `bash
-    npx eas build -p ios
-    `
+npx eas build -p ios
+`
     このコマンドは、Expo Application Services (EAS) を使って、クラウド上でプロジェクトをビルドし、署名済みのバイナリを生成します。\
-    バージョンが変わらない場合は、expo prebuild --clean を実行します。
+    バージョンが変わらない場合は、npx expo prebuild --clean を実行します。
 
 2.  App Store Connect への提出
     生成されたバイナリを Apple の App Store Connect にアップロードします。
     `bash
-    npx eas submit --platform ios
-    `
+npx eas submit --platform ios
+`
     このコマンドを実行すると、ビルドされたアプリが App Store Connect に提出され、テスターへの配布や審査提出が可能になります。
 
 ---
