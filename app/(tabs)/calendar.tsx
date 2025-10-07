@@ -10,9 +10,11 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from "react-native";
 import type { ActionSheetRef } from "react-native-actions-sheet";
 import ActionSheet from "react-native-actions-sheet";
 import { Calendar, DateData } from "react-native-calendars";
-import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
-
-const bannerAdUnitId = process.env.EXPO_PUBLIC_BANNER_AD_UNIT2_ID ?? "";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
 
 export default function CalendarScreen() {
   const theme = useThemeStyles();
@@ -33,6 +35,10 @@ export default function CalendarScreen() {
     setWeight,
     setMemo,
   } = useCalendarLogic();
+
+  const bannerAdUnitId = __DEV__
+    ? TestIds.BANNER
+    : process.env.EXPO_PUBLIC_BANNER_AD_UNIT2_ID ?? "";
 
   // 日付押下処理
   const handleDayPressWithSheet = (date: DateData) => {
