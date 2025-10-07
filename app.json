@@ -2,7 +2,7 @@
   "expo": {
     "name": "Don't Snack",
     "slug": "dont-snack",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/favicon.png",
     "scheme": "myapp",
@@ -20,7 +20,7 @@
           "$(AppIdentifierPrefix)com.ryomasolid.dontsnack2"
         ]
       },
-      "buildNumber": "2.3.3"
+      "buildNumber": "2.3.4"
     },
     "plugins": [
       "expo-router",
