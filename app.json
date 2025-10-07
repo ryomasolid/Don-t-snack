@@ -20,7 +20,7 @@
           "$(AppIdentifierPrefix)com.ryomasolid.dontsnack2"
         ]
       },
-      "buildNumber": "2.3.2"
+      "buildNumber": "2.3.3"
     },
     "plugins": [
       "expo-router",
@@ -31,6 +31,14 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "iosAppId": "ca-app-pub-3362493734697220~2379722807",
+          "userTrackingUsageDescription": "We use data for ads",
+          "delayAppMeasurementInit": true
         }
       ]
     ],
