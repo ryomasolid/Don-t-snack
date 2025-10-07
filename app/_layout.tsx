@@ -1,10 +1,11 @@
-import { auth } from '@/firebaseConfig';
-import { Redirect, Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
-import { MD3LightTheme, PaperProvider } from 'react-native-paper';
-import { signInAnonymouslyAsync } from '../store/firestore';
+import { auth } from "@/firebaseConfig";
+import { Redirect, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { MobileAds } from "react-native-google-mobile-ads";
+import { MD3LightTheme, PaperProvider } from "react-native-paper";
+import { signInAnonymouslyAsync } from "../store/firestore";
 
 function AppLayout() {
   const [isAuth, setIsAuth] = useState(false);
@@ -12,8 +13,11 @@ function AppLayout() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+    MobileAds()
+      .initialize()
+      .then(() => console.log("AdMob 初期化"));
 
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setIsAuth(true);
         setIsAuthLoading(false);
