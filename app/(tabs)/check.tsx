@@ -9,7 +9,8 @@ import {
   getStatusByDate,
   setStatusForDate,
 } from "@/store/firestore";
-import React, { useEffect, useState } from "react";
+import { useSetAtom } from "jotai";
+import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
   BannerAd,
@@ -18,25 +19,27 @@ import {
 } from "react-native-google-mobile-ads";
 import { Text } from "react-native-paper";
 
-const today = new Date();
-const formattedDate = today.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
-
-const year = today.getFullYear();
-const month = (today.getMonth() + 1).toString().padStart(2, "0");
-const day = today.getDate().toString().padStart(2, "0");
-const yyyymmdd = `${year}${month}${day}`;
+const getLocalDate = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const day = now.getDate().toString().padStart(2, "0");
+  const yyyymmdd = `${year}${month}${day}`;
+  const formattedDate = now.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  return { yyyymmdd, formattedDate };
+};
 
 export default function CheckScreen() {
   const theme = useThemeStyles();
+  const setClendarValues = useSetAtom(calendarAtom);
+
+  const { yyyymmdd, formattedDate } = useMemo(getLocalDate, []);
 
   const [status, setStatus] = useState<string>("0");
-
-  const { useSetAtom } = require("jotai");
-  const setClendarValues = useSetAtom(calendarAtom);
 
   const bannerAdUnitId = __DEV__
     ? TestIds.BANNER
@@ -84,16 +87,16 @@ export default function CheckScreen() {
   };
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadStatus = async () => {
       try {
-        const fetchedData = await getStatusByDate(yyyymmdd);
-        setStatus(String(fetchedData));
+        const fetchedStatus = await getStatusByDate(yyyymmdd);
+        setStatus(String(fetchedStatus ?? STATUS_NONE));
       } catch (error) {
         console.error(error);
       }
     };
 
-    loadData();
+    loadStatus();
   }, []);
 
   return (

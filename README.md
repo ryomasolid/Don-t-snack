@@ -1,63 +1,124 @@
-# DontSnack
+# Don't Snack
 
-🍭 **「DontSnack」は、モバイルアプリです。** あなたの食生活を記録し、間食をしない習慣を築くお手伝いをします。\
-このアプリは、Expo と React Native をベースに構築されております。
+間食記録アプリ。毎日の間食の有無をチェックし、カレンダーでストリークを確認できる。
 
----
-
-## 🚀 はじめに
-
-### インストールと実行
-
-1.  このリポジトリをクローンします。
-    ```bash
-    git clone [https://github.com/your-username/dont-snack.git](https://github.com/your-username/dont-snack.git)
-    cd dont-snack
-    ```
-2.  依存関係をインストールします。
-    ```bash
-    npm install
-    ```
-3.  プロジェクトを起動します。
-    ```bash
-    npx expo start
-    ```
-4.  ターミナルが開いたら i を押せば iOS シミュレーターで起動
+**対象プラットフォーム:** iOS のみ
 
 ---
 
-## ビルドと提出
+## 技術スタック
 
-このプロジェクトの iOS アプリをビルドして、App Store Connect に提出するまでの手順は以下の通りです。
+- **Expo** ~54 / **React Native** 0.81
+- **Firebase** 12（Anonymous Auth + Firestore）
+- **Jotai** 2（グローバル状態管理）
+- **AdMob**（react-native-google-mobile-ads）
 
-1.  アプリのビルド
-    アプリのバイナリファイル（.ipa）を生成します。
-    `bash
-npx eas build -p ios
-`
-    このコマンドは、Expo Application Services (EAS) を使って、クラウド上でプロジェクトをビルドし、署名済みのバイナリを生成します。\
-    バージョンが変わらない場合は、npx expo prebuild --clean を実行します。
+---
 
-2.  App Store Connect への提出
-    生成されたバイナリを Apple の App Store Connect にアップロードします。
-    `bash
+## セットアップ
+
+### 1. 依存関係のインストール
+
+```bash
+npm install
+```
+
+### 2. 環境変数の設定
+
+`.env.local` を作成し、Firebase と AdMob の値を設定する。`.env` がテンプレートとして置いてある。
+
+```bash
+cp .env .env.local
+```
+
+`.env.local` を編集：
+
+```env
+EXPO_PUBLIC_FIREBASE_API_KEY="..."
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN="..."
+EXPO_PUBLIC_FIREBASE_PROJECT_ID="..."
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET="..."
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="..."
+EXPO_PUBLIC_FIREBASE_APP_ID="..."
+EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID="..."
+EXPO_PUBLIC_BANNER_AD_UNIT1_ID="..."
+EXPO_PUBLIC_BANNER_AD_UNIT2_ID="..."
+```
+
+### 3. EAS へのログイン（初回のみ）
+
+```bash
+npx eas-cli login
+```
+
+---
+
+## 開発サーバーの起動
+
+### ngrok トンネル経由（デフォルト）
+
+```bash
+npm start
+```
+
+ngrok がタイムアウトする場合は LAN モードを使う。
+
+### LAN 経由（同一 WiFi ネットワーク推奨）
+
+```bash
+npm run start:lan
+```
+
+### Dev Client について
+
+このプロジェクトは `expo-dev-client` を使用しているため、Expo Go アプリではなくカスタムビルドの **Dev Client** をデバイスにインストールして接続する必要がある。
+
+---
+
+## ビルド（EAS Build）
+
+### Dev Client ビルド（開発用）
+
+```bash
+npx eas build --profile development --platform ios
+```
+
+### プレビュービルド（内部配布）
+
+```bash
+npx eas build --profile preview --platform ios
+```
+
+### 本番ビルド
+
+```bash
+npx eas build --profile production --platform ios
+```
+
+---
+
+## App Store への申請
+
+```bash
 npx eas submit --platform ios
-`
-    このコマンドを実行すると、ビルドされたアプリが App Store Connect に提出され、テスターへの配布や審査提出が可能になります。
+```
 
 ---
 
-## 🛠️ 使用技術
+## プロジェクト構成
 
-このプロジェクトは、最新のクロスプラットフォーム開発技術を活用しています。
-
-- **Expo**: React Native フレームワークをベースに、迅速な開発とビルドプロセスを可能にします。
-- **Expo Router**: ファイルベースのルーティングシステムで、ナビゲーションをシンプルにします。
-- **React Native**: iOS、Android、Web 向けにネイティブなユーザーインターフェースを構築するためのフレームワークです。
-- **Firebase**: バックエンドサービス（認証、データベースなど）を提供します。
-- **Jotai**: ステート管理ライブラリで、シンプルかつ効率的なグローバルステート管理を実現します。
-- **React Navigation**: アプリ内の画面間ナビゲーションを管理します。
-- **React Native Calendars**: 日付選択やカレンダー機能を提供します。
-- **TypeScript**: 型安全な JavaScript コードを作成し、開発中のエラーを減らします。
-
----
+```
+app/
+  (tabs)/
+    check.tsx       # 今日の間食チェック画面
+    calendar.tsx    # カレンダー履歴・ストリーク画面
+components/
+  ContainerComponent.tsx  # テーマ対応ラッパー
+  CustomHeader.tsx
+hooks/
+  useCalendarLogic.ts     # カレンダーロジック
+  useThemeStyles.ts
+store/
+  atoms.ts                # Jotai atoms（colorAtom, calendarAtom）
+  firestore.ts            # Firebase CRUD
+```

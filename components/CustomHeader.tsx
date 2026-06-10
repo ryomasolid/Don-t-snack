@@ -1,22 +1,20 @@
 import { useThemeStyles } from '@/hooks/useThemeStyles';
 import { colorAtom } from '@/store/atoms';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Pressable, StyleSheet, useColorScheme } from 'react-native';
+import { useAtom } from 'jotai';
+import { Pressable, StyleSheet } from 'react-native';
 import { Appbar } from 'react-native-paper';
 
 export function CustomHeader() {
-  const theme = useThemeStyles()
-
-  const { useAtom } = require("jotai");
+  const theme = useThemeStyles();
   const [colorValue, setColorAtom] = useAtom(colorAtom);
 
   const toggleTheme = () => {
     setColorAtom(!colorValue);
   };
 
-  const colorScheme = useColorScheme();
-  const themeIconName = colorScheme === 'dark' ? 'white-balance-sunny' : 'moon-waning-crescent';
-  const themeIconColor = colorScheme === 'dark' ? 'yellow' : 'black';
+  const themeIconName = colorValue ? 'white-balance-sunny' : 'moon-waning-crescent';
+  const themeIconColor = colorValue ? 'yellow' : '#555';
 
   return (
     <Appbar.Header style={{ backgroundColor: theme.color1 }}>
@@ -35,12 +33,6 @@ export function CustomHeader() {
 }
 
 const styles = StyleSheet.create({
-  menu: {
-    fontFamily: 'SpaceMono',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
   title: {
     fontFamily: 'SpaceMono',
     fontSize: 20,

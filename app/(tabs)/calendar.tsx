@@ -40,43 +40,35 @@ export default function CalendarScreen() {
     ? TestIds.BANNER
     : process.env.EXPO_PUBLIC_BANNER_AD_UNIT2_ID ?? "";
 
-  // 日付押下処理
   const handleDayPressWithSheet = (date: DateData) => {
     handleDayPress(date);
-
     if (actionSheetRef.current) {
       actionSheetRef.current.show();
     }
   };
 
-  // Yes押下処理
   const handleClickYes = () => {
     const value = status === STATUS_YES ? STATUS_NONE : STATUS_YES;
     setStatus(value);
   };
 
-  // No押下処理
   const handleClickNo = () => {
     const value = status === STATUS_NO ? STATUS_NONE : STATUS_NO;
     setStatus(value);
   };
 
-  // 体重入力処理
   const handleChangeWeight = (value: string) => {
-    if (value.length > 3) {
+    if (value.length > 6) {
       return;
     }
-
     setWeight(value);
   };
 
-  // メモ入力処理
   const handleChangeMemo = (value: string) => {
     const byteLength = new TextEncoder().encode(value).length;
     if (byteLength > 255) {
       return;
     }
-
     setMemo(value);
   };
 
@@ -114,14 +106,14 @@ export default function CalendarScreen() {
       <View style={styles.streakContainer}>
         <View style={styles.streakItem}>
           <Ionicons name="trophy-outline" size={32} color="#FFD700" />
-          <Text style={styles.streakLabel}>最大連続日数</Text>
-          <Text style={styles.streakValue}>{maxNoStreak}日</Text>
+          <Text style={styles.streakLabel}>Best Streak</Text>
+          <Text style={styles.streakValue}>{maxNoStreak} days</Text>
         </View>
 
         <View style={styles.streakItem}>
           <Ionicons name="flame" size={32} color="#FF4500" />
-          <Text style={styles.streakLabel}>継続日数</Text>
-          <Text style={styles.streakValue}>{currentNoStreak}日</Text>
+          <Text style={styles.streakLabel}>Current Streak</Text>
+          <Text style={styles.streakValue}>{currentNoStreak} days</Text>
         </View>
       </View>
 
@@ -171,24 +163,24 @@ export default function CalendarScreen() {
 
           <View style={styles.inputSection}>
             <View style={styles.inputContainer}>
-              <Text style={styles.inputTitle}>体重</Text>
+              <Text style={styles.inputTitle}>Weight</Text>
               <TextInput
                 style={styles.textInputWeight}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 onChangeText={handleChangeWeight}
                 value={weight}
-                placeholder="体重を入力..."
+                placeholder="Enter weight..."
                 placeholderTextColor="#888"
               />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.inputTitle}>メモ</Text>
+              <Text style={styles.inputTitle}>Memo</Text>
               <TextInput
                 style={styles.textInputMemo}
                 multiline={true}
                 onChangeText={handleChangeMemo}
                 value={memo}
-                placeholder="メモを入力してください..."
+                placeholder="Add a note..."
                 placeholderTextColor="#888"
               />
             </View>
@@ -267,10 +259,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   streakValue: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
     color: "#fff",
     marginTop: 5,
+    textAlign: "center",
   },
   bannerAdContainer: {
     alignItems: "center",
