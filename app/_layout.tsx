@@ -1,14 +1,20 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { requestTrackingPermissionsAsync } from "expo-tracking-transparency";
 import { useEffect } from "react";
+import { Platform } from "react-native";
 import { MobileAds } from "react-native-google-mobile-ads";
 import { MD3LightTheme, PaperProvider } from "react-native-paper";
 
 function AppLayout() {
   useEffect(() => {
-    MobileAds()
-      .initialize()
-      .then(() => console.log("AdMob 初期化"));
+    const initAds = async () => {
+      if (Platform.OS === "ios") {
+        await requestTrackingPermissionsAsync();
+      }
+      await MobileAds().initialize();
+    };
+    initAds();
   }, []);
 
   return (
