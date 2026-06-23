@@ -1,6 +1,6 @@
 import { STATUS_NO, STATUS_NONE, STATUS_YES } from '@/constants/Status';
 import { calendarAtom } from '@/store/atoms';
-import { getAllData, setStatusForDate } from '@/store/firestore';
+import { getAllData, setStatusForDate } from '@/store/storage';
 import { CalendarDto } from '@/types/api';
 import { useAtom } from 'jotai';
 import { useEffect, useMemo, useState } from 'react';

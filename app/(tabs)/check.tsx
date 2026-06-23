@@ -8,7 +8,7 @@ import {
   getAllData,
   getStatusByDate,
   setStatusForDate,
-} from "@/store/firestore";
+} from "@/store/storage";
 import { useSetAtom } from "jotai";
 import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
