@@ -18,6 +18,13 @@ expo-env.d.ts
 *.key
 *.mobileprovision
 
+# Generated native projects (expo prebuild で都度生成)
+ios/
+android/
+
+# Build artifacts
+*.ipa
+
 # Metro
 .metro-health-check*
 
